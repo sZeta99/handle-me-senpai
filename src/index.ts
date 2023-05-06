@@ -1,23 +1,26 @@
-import { DecoretorClass, DecoretorFactory, CatchAndLog } from "./decorators/dec";
+import { SenpaiCatchAndLog } from "./decorators/log";
 
-@DecoretorFactory("newParameter")
+
+export const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+        reject(new Error("error"));
+    }, 1000);
+});
 export class Ca {
-    newParameter: any;
 
-    constructor() {
-        console.log("constructor");
-    }
 
-    @CatchAndLog
-    func() {
-        console.log("func");
-        throw new Error("Error in func");
+    @SenpaiCatchAndLog()
+    async func() {
+        
+        await promise;
+        
     }
 }
+
+//promise that throws an error after 1 second
+
+
 
 const ciao = new Ca();
 
 ciao.func();
-if(ciao.newParameter !== undefined) {
-    console.log(ciao.newParameter);
-}

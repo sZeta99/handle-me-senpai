@@ -1,4 +1,7 @@
+
 import { Ca } from "..";
+
+
 
 export function DecoretorClass(target: Function) {
     console.log("DecoretorClass");
@@ -27,25 +30,7 @@ export function DecoretorFactory( newParameter : string) {
 }
 // -------/
 
-export function CatchAndLog(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
 
-    const originalMethod = descriptor.value;
-    descriptor.value = function (...args: any[]) {
-        try {
-           
-            const result = originalMethod.apply(this, args);
-            
-            return result;
-        } catch (error:any) {
-            if(error instanceof Error) {
-                console.log(propertyKey + " throws error: " + error.message);
-            }
-            else {
-                console.log(propertyKey + " throws error: " + error);
-            }
-            
-        }
-    }
+ 
 
     
-}

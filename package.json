@@ -24,5 +24,8 @@
   "homepage": "https://github.com/sZeta99/handle-me-senpai#readme",
   "dependencies": {
     "typescript": "^5.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.1.0"
   }
 }
