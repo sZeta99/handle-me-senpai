@@ -1,0 +1,28 @@
+{
+  "name": "handle-me-senpai",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "buildandrun": "tsc && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sZeta99/handle-me-senpai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sZeta99/handle-me-senpai/issues"
+  },
+  "homepage": "https://github.com/sZeta99/handle-me-senpai#readme",
+  "dependencies": {
+    "typescript": "^5.0.4"
+  }
+}
