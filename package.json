@@ -9,7 +9,11 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildandrun": "tsc && node dist/index.js"
+    "buildandrun": "tsc && node dist/index.js",
+    "format:check": "prettier --check .",
+    "format:write": "prettier --write .",
+    "lint:check": "eslint",
+    "lint:fix": "eslint --fix"
   },
   "repository": {
     "type": "git",
@@ -23,6 +27,8 @@
   },
   "homepage": "https://github.com/sZeta99/handle-me-senpai#readme",
   "dependencies": {
+    "eslint": "^8.40.0",
+    "prettier": "^2.8.8",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

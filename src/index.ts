@@ -1,10 +1,9 @@
-import { SenpaiCatch,  SenpaiLogAsync} from "./decorators/log";
-
+import { SenpaiCatch, SenpaiLogAsync } from './decorators/log';
 
 export function createPromise() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      reject(new Error("error1"));
+      reject(new Error('error1'));
     }, 1000);
   });
 }
@@ -16,25 +15,15 @@ export function createPromise() {
 // });
 @SenpaiCatch
 export class Ca {
-
-
-    @SenpaiLogAsync()
-    public async func1() {
-        console.log("func1");
-        await  createPromise();
-        
-    }
+  @SenpaiLogAsync()
+  public async func1() {
+    console.log('func1');
+    await createPromise();
+  }
 
   @SenpaiLogAsync()
-    public func2() {
-     
-    }
-
-    
-
-    
+  public func2() {}
 }
-
 
 const ciao = new Ca();
 
