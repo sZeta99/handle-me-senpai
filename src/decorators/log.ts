@@ -1,22 +1,48 @@
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
-
-type SenpaiCatchAndLogType = {
+const SubMethods = Symbol('SubMethods');
+type SenpaiLogType = {
   destination?: string ;
   condition?: boolean ;
   mode?: "w"| "a";
   showStack?: boolean;
 };
 
-export function SenpaiCatchAndLog(...values: SenpaiCatchAndLogType[]) {
+export function SenpaiLogAsync(...values: SenpaiLogType[]) {
 
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
-    descriptor.value = function (...args: any[]) {
 
-          
-            const result = originalMethod.apply(this, args).catch((error:any) => {
+    
+    
+    descriptor.value = function (...args: any[]) { 
+        
 
+        const result = originalMethod.apply(this, args).catch((error: any) => {
+            senpaiHandleLog(error, ...values);
+            
+        });
+        return result;
+    }
+
+   
+           
+        
+    
+  
+  
+    };
+}
+
+
+
+
+
+
+
+function senpaiHandleLog(error: Error, ...values: SenpaiLogType[])
+{
+    
             let message;
 
             if (error instanceof Error) {
@@ -49,9 +75,27 @@ export function SenpaiCatchAndLog(...values: SenpaiCatchAndLogType[]) {
                 }
 
             }
-            
-        });
-        return result;
-    }
 }
+
+
+
+
+export function SenpaiCatch<T extends { new(...args: any[]): {} }>(Base: T) {
+console.log("SenpaiLogClass");
+console.log(Base);
+    return class extends Base {
+         constructor(...args: any[]) {
+      super(...args);
+      console.log(Base.prototype)
+      const subMethods = Base.prototype[SubMethods];
+      console.log(subMethods);
+      if (subMethods) {
+        subMethods.forEach((requestName: string, method: string) => {
+            console.log(requestName);
+            console.log(method);
+
+        });
+      }
+    }
+    };
 }
