@@ -4,3 +4,4 @@
 // This is not a supported library, use at your own risk
 export { SenpaiLogAsync } from './decorators/log';
 export { SenpaiGoTo } from './decorators/goTo';
+

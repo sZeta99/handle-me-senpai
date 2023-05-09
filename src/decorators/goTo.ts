@@ -4,7 +4,7 @@
  * @param values  Functions to go to in case of error
  * @returns {Function}
  */
-export function SenpaiGoTo(...values: Function[]) {
+export function SenpaiGoTo(...values: any[]) {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
 

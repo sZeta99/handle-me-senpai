@@ -1,6 +1,6 @@
 {
   "name": "handle-me-senpai",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Super simple error hadling library, just an experiment. Use at your own risk.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
