@@ -1,14 +1,21 @@
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
-const SubMethods = Symbol('SubMethods');
-type SenpaiLogType = {
+
+export type SenpaiLogType = {
   destination?: string;
   condition?: boolean;
   mode?: 'w' | 'a';
   showStack?: boolean;
 };
 
-export function SenpaiLogAsync(...values: SenpaiLogType[]) {
+/**
+ * Write the error to the console and/or to a file.
+ * Only works with async functions.
+ * Not compatible with SenpaiGoTo.
+ * @param values Objects of type SenpaiLogType to specify the destination, condition, mode and showStack, print on console if no destination is given
+ * @returns {Function}
+ */
+export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod = descriptor.value;
 
@@ -50,23 +57,4 @@ function senpaiHandleLog(error: Error, ...values: SenpaiLogType[]) {
       });
     }
   }
-}
-
-export function SenpaiCatch<T extends { new (...args: any[]): {} }>(Base: T) {
-  console.log('SenpaiLogClass');
-  console.log(Base);
-  return class extends Base {
-    constructor(...args: any[]) {
-      super(...args);
-      console.log(Base.prototype);
-      const subMethods = Base.prototype[SubMethods];
-      console.log(subMethods);
-      if (subMethods) {
-        subMethods.forEach((requestName: string, method: string) => {
-          console.log(requestName);
-          console.log(method);
-        });
-      }
-    }
-  };
 }
