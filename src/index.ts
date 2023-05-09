@@ -1,23 +1,6 @@
-import { DecoretorClass, DecoretorFactory, CatchAndLog } from "./decorators/dec";
-
-@DecoretorFactory("newParameter")
-export class Ca {
-    newParameter: any;
-
-    constructor() {
-        console.log("constructor");
-    }
-
-    @CatchAndLog
-    func() {
-        console.log("func");
-        throw new Error("Error in func");
-    }
-}
-
-const ciao = new Ca();
-
-ciao.func();
-if(ciao.newParameter !== undefined) {
-    console.log(ciao.newParameter);
-}
+// Project: Handheld-Me-Senpai
+// Author: Noir
+// File Created: 2023-05-09 16:00:00
+// This is not a supported library, use at your own risk
+export { SenpaiLogAsync } from './decorators/log';
+export { SenpaiGoTo } from './decorators/goTo';
