@@ -17,14 +17,25 @@ export type SenpaiLogType = {
  */
 export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const originalMethod = descriptor.value;
+    const originalMethod: Function = descriptor.value;
 
-    descriptor.value = function (...args: any[]) {
-      const result = originalMethod.apply(this, args).catch((error: any) => {
+    console.log(propertyKey);
+
+    descriptor.value = async function (...args: any[]) {
+      let result;
+      let stringMethod: string;
+      try {
+        stringMethod =  originalMethod.toString();
+        //edit the method directly
+        //evel()
+        stringMethod;
+      } catch (error: any) {
         senpaiHandleLog(error, ...values);
-      });
+      }
       return result;
     };
+
+    return descriptor;
   };
 }
 
