@@ -10,11 +10,12 @@ export type argsForCatcher = {
     handler: any[];
 };
 
-export function catcher(propertyKey : string, originalMethod: Function, handler: Function): Function{
+export function catcher(originalMethod: Function, handler: Function, ...args : any): Function{
+
 
       
-        const result = ingectInAsync(result, handler);
-        result = ingectInSync(result, handler);
+        let result = ingectInAsync(originalMethod, handler);
+        result  = ingectInSync(result, handler, ...args);
         console.log(result.toString());
         return result;
 }
@@ -23,7 +24,7 @@ function ifAsync(fun: Function) {
   return (fun.toString().includes('async'))
 }
 
-function ingectInSync(fun: Function, errorFunc: Function): string {
+function ingectInSync(fun: Function, errorFunc: Function, ...args:any): Function {
     
   const stringFun = fun.toString();
     // Define a regular expression that matches `.then()` method calls
@@ -40,7 +41,7 @@ function ingectInSync(fun: Function, errorFunc: Function): string {
       return `${match}.catch((error) => { console.log("error"); })`;
     }
   });
-  return modifiedCode;
+  return new Function(args,modifiedCode);
   //Find all the then that don't have a catch
 
 

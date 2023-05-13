@@ -17,17 +17,17 @@ const funcPromise = () => {
 class C {
   @SenpaiLogAsync({ destination: 'File.txt' })
   public  name(a? : string) {
+
     funcPromise().then();
     console.log('func');
+    
   }
 
 }
 
 const c = new C();
+c.name();
+console.log(c.name.toString());
 
-const str = "function name(a) {  console.log('func'); } name('a');";
-const funcStr = new Function(str);
-console.log(funcStr.toString());
-funcStr();
 
 
