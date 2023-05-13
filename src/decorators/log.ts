@@ -1,5 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
+import { stringify } from 'querystring';
+import { catcher } from './catcher';
 
 export type SenpaiLogType = {
   destination?: string;
@@ -18,26 +20,17 @@ export type SenpaiLogType = {
 export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalMethod: Function = descriptor.value;
+    console.log(originalMethod.toString());
+    descriptor.value = function (...args: any[]) {
 
-    console.log(propertyKey);
-
-    descriptor.value = async function (...args: any[]) {
-      let result;
-      let stringMethod: string;
-      try {
-        stringMethod =  originalMethod.toString();
-        //edit the method directly
-        //evel()
-        stringMethod;
-      } catch (error: any) {
-        senpaiHandleLog(error, ...values);
-      }
+      const result = catcher(propertyKey, originalMethod,senpaiHandleLog).apply(this, args);
       return result;
-    };
-
-    return descriptor;
   };
+  return descriptor;
 }
+}
+
+
 
 function senpaiHandleLog(error: Error, ...values: SenpaiLogType[]) {
   let message;

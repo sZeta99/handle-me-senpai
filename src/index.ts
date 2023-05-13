@@ -16,7 +16,7 @@ const funcPromise = () => {
 };
 class C {
   @SenpaiLogAsync({ destination: 'File.txt' })
-  public name() {
+  public  name(a? : string) {
     funcPromise().then();
     console.log('func');
   }
@@ -24,5 +24,10 @@ class C {
 }
 
 const c = new C();
-console.log(c.name.toString())
-c.name();
+
+const str = "function name(a) {  console.log('func'); } name('a');";
+const funcStr = new Function(str);
+console.log(funcStr.toString());
+funcStr();
+
+
