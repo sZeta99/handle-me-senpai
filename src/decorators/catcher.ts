@@ -1,35 +1,31 @@
-import { type } from "os";
+import { type } from 'os';
 
 export type CatcherObject = {
-  await : boolean;
-  tryAndCatch : boolean;
-  thenAndCatch : boolean;
+  await: boolean;
+  tryAndCatch: boolean;
+  thenAndCatch: boolean;
 };
 export type argsForCatcher = {
-    originalMethod: any[];
-    handler: any[];
+  originalMethod: any[];
+  handler: any[];
 };
 
-export function catcher(originalMethod: Function, handler: Function, ...args : any): Function{
-
-
-      
-        let result = ingectInAsync(originalMethod, handler);
-        result  = ingectInSync(result, handler, ...args);
-        console.log(result.toString());
-        return result;
+export function catcher(originalMethod: Function, handler: Function, ...args: any) {
+  // let result = ingectInAsync(originalMethod, handler);
+  // result  = ingectInSync(result, handler, ...args);
+  // console.log(result.toString());
+  // return result;
 }
 
 function ifAsync(fun: Function) {
-  return (fun.toString().includes('async'))
+  return fun.toString().includes('async');
 }
 
-function ingectInSync(fun: Function, errorFunc: Function, ...args:any): Function {
-    
+export function ingectInSync(fun: Function, errorFunc: Function): string {
   const stringFun = fun.toString();
-    // Define a regular expression that matches `.then()` method calls
-  
-    // Define regular expressions that match `.then()` and `.catch()` method calls
+  // Define a regular expression that matches `.then()` method calls
+
+  // Define regular expressions that match `.then()` and `.catch()` method calls
   const thenRegex = /\.then\([^)]*\)/g;
   const catchRegex = /\.catch\([^)]*\)/g;
 
@@ -41,25 +37,16 @@ function ingectInSync(fun: Function, errorFunc: Function, ...args:any): Function
       return `${match}.catch((error) => { console.log("error"); })`;
     }
   });
-  return new Function(args,modifiedCode);
+  return modifiedCode;
   //Find all the then that don't have a catch
-
-
-
-
 }
 
 function ingectInAsync(fun: Function, errorFunc: Function): Function {
-  
- try {
-  return fun().catch((error: any) => {
-    errorFunc(error);
-  });
- }catch (error: any) {
-
-  return fun;
- }
-  
+  try {
+    return fun().catch((error: any) => {
+      errorFunc(error);
+    });
+  } catch (error: any) {
+    return fun;
+  }
 }
-
-

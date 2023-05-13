@@ -1,6 +1,6 @@
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
-import { stringify } from 'querystring';
+import { ingectInSync } from './catcher';
 
 export type SenpaiLogType = {
   destination?: string;
@@ -16,40 +16,20 @@ export type SenpaiLogType = {
  * @param values Objects of type SenpaiLogType to specify the destination, condition, mode and showStack, print on console if no destination is given
  * @returns {Function}
  */
-export function SenpaiLogAsync(...values: SenpaiLogType[]):Function  {
-
-
+export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-   
-      let originalMethod: Function = descriptor.value;
-      originalMethod =originalMethod;
+    console.log(typeof descriptor.value);
+    const originalMethod: Function = descriptor.value;
+    const modifiedMethodString = ingectInSync(originalMethod, senpaiHandleLog);
+    const modifiedMethod = Function(`return function ${modifiedMethodString}`)();
+    Object.defineProperty(descriptor, 'value', { value: modifiedMethod });
 
+    console.log(originalMethod.toString());
+    console.log(descriptor.value.toString());
 
-     const originalMethodString = originalMethod.toString();
-
-    // Modify the function string
-      const modifiedMethodString = originalMethodString;
-
-    // Create a new function from the modified string
-      const modifiedMethod = Function(`return function ${modifiedMethodString}`)();
-      //print an object
-      
-      
-      Object.defineProperty(modifiedMethod, 'value', { value: originalMethod });
-      console.log(originalMethod.toString());
-      console.log(modifiedMethod.value.toString());
-
-    descriptor.value = function (...args: any[]) {
-
-      const result = modifiedMethod.value.apply(this, args);
-      
-      return result;
-    }
     return descriptor;
   };
 }
-
-
 
 function senpaiHandleLog(error: Error, ...values: SenpaiLogType[]) {
   let message;
@@ -80,4 +60,7 @@ function senpaiHandleLog(error: Error, ...values: SenpaiLogType[]) {
       });
     }
   }
+}
+function ingectInAsync(originalMethod: Function, senpaiHandleLog: (error: Error, ...values: SenpaiLogType[]) => void, arg2: SenpaiLogType) {
+  throw new Error('Function not implemented.');
 }
