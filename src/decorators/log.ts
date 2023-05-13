@@ -17,6 +17,8 @@ export type SenpaiLogType = {
  * @returns {Function}
  */
 export function SenpaiLogAsync(...values: SenpaiLogType[]):Function  {
+
+
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
    
       let originalMethod: Function = descriptor.value;
@@ -32,13 +34,14 @@ export function SenpaiLogAsync(...values: SenpaiLogType[]):Function  {
       const modifiedMethod = Function(`return function ${modifiedMethodString}`)();
       //print an object
       
-      const value = modifiedMethod.valueOf();
+      
+      Object.defineProperty(modifiedMethod, 'value', { value: originalMethod });
       console.log(originalMethod.toString());
-      console.log(value.toString());
+      console.log(modifiedMethod.value.toString());
 
     descriptor.value = function (...args: any[]) {
 
-      const result = value.apply(this, args);
+      const result = modifiedMethod.value.apply(this, args);
       
       return result;
     }
