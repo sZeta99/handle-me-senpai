@@ -18,7 +18,8 @@ export type SenpaiLogType = {
  */
 export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
   return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    console.log(typeof descriptor.value);
+    
+    console.log(descriptor.value);
     const originalMethod: Function = descriptor.value;
     const modifiedMethodString = ingectInSync(originalMethod, senpaiHandleLog);
     const modifiedMethod = Function(`return function ${modifiedMethodString}`)();
@@ -26,6 +27,13 @@ export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
 
     console.log(originalMethod.toString());
     console.log(descriptor.value.toString());
+
+    descriptor.value = function (...args: any[]) {
+
+      //this. = modifiedMethod.bind(this);
+      const result = originalMethod.apply(this, args);
+      return result;
+    }
 
     return descriptor;
   };
