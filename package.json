@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/sZeta99/handle-me-senpai#readme",
   "dependencies": {
+    "reflect-metadata": "^0.1.13",
     "typescript": "^5.0.4"
   },
   "devDependencies": {

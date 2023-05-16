@@ -1,7 +1,7 @@
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
 import { ingectInSync } from './catcher';
-
+import 'reflect-metadata';
 export type SenpaiLogType = {
   destination?: string;
   condition?: boolean;
@@ -17,23 +17,21 @@ export type SenpaiLogType = {
  * @returns {Function}
  */
 export function SenpaiLogAsync(...values: SenpaiLogType[]): Function {
-  return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+  return function (target:any, propertyKey: string, descriptor: PropertyDescriptor) {
+
     
-    console.log(descriptor.value);
+    
+    console.log(descriptor.value.toString());
     const originalMethod: Function = descriptor.value;
     const modifiedMethodString = ingectInSync(originalMethod, senpaiHandleLog);
     const modifiedMethod = Function(`return function ${modifiedMethodString}`)();
-    Object.defineProperty(descriptor, 'value', { value: modifiedMethod });
 
-    console.log(originalMethod.toString());
-    console.log(descriptor.value.toString());
+    console.log(modifiedMethod.toString());
 
-    descriptor.value = function (...args: any[]) {
 
-      //this. = modifiedMethod.bind(this);
-      const result = originalMethod.apply(this, args);
-      return result;
-    }
+    descriptor.value = modifiedMethod;
+
+    Object.getPrototypeOf(target)[propertyKey] = modifiedMethod;
 
     return descriptor;
   };

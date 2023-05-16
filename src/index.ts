@@ -2,7 +2,7 @@
 // Author: Noir
 // File Created: 2023-05-09 16:00:00
 
-import { SenpaiLogAsync } from './decorators/log';
+import { ReplaceMethodDecorator, SenpaiClass } from './decorators/TestDecoretor';
 
 // This is not a supported library, use at your own risk
 export { SenpaiLogAsync } from './decorators/log';
@@ -14,14 +14,15 @@ const funcPromise = () => {
     reject(new Error('ciao'));
   });
 };
+@SenpaiClass
 class C {
-  @SenpaiLogAsync({ destination: 'File.txt' })
-  public name(a?: string) {
-    funcPromise().then();
+  @ReplaceMethodDecorator
+  public name() {
     console.log('func');
   }
 }
 
 const c = new C();
 c.name();
-console.log(c.name.toString());
+
+
